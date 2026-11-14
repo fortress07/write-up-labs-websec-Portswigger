@@ -11,10 +11,12 @@ SELECT * FROM products WHERE category = 'Gifts' AND released = 1
 Dựa vào việc phân tích đề bài ta xác định được yêu cầu là khiến ứng dụng hiển thị một hoặc nhiều sản phẩm chưa được phát hành bằng cách quan sát hành vi thực hiện của câu lệnh SQL .
 
 Ảnh lab đầu tiên :
-![[anh-lab-1-sqli-1.png]]
+![anh-lab-1-sqli-1](anh-lab-1-sqli-1.png)
+
 
 Trông không có gì lạ. Mở burpsuite:
-![[anh-lab-1-sqli-2.png]]
+![anh-lab-1-sqli-2](anh-lab-1-sqli-2.png)
+
 
 Dựa vào đọc dữ kiện của bài lab (`SELECT * FROM products WHERE category = 'Gifts' AND released = 1`) và từ trong ảnh ta thấy các URL đáng chú ý:
 ```
@@ -27,7 +29,8 @@ GET /filter?category=Pets
 Ta sẽ tiến hành Send to Repeater ở `GET /filter?category=Gifts`. Ở đây ta sẽ thử trường hợp thêm dấu `'` (`GET /filter?category=Gifts'`).
 
 Kết quả trả về:
-![[anh-lab-1-sqli-3.png]]
+![anh-lab-1-sqli-3](anh-lab-1-sqli-3.png)
+
 **500 Internal Server Error** . Nguyên nhân là do phía server đang ghép trực tiếp giá trị `category` vào câu lệnh SQL mà không xử lý giá trị đầu vào + Dính lỗi SQL syntax: Khi thêm dấu nháy vào thì câu lệnh SQL trở thành:
 ```SQL
 SELECT * FROM products WHERE category = 'Gifts'' AND released = 1
@@ -54,6 +57,7 @@ Với phần điều kiện `WHERE` luôn đúng và loại bỏ được phần
 SELECT * FROM products;
 ```
 => Trả về toàn bộ sản phẩm có trong database, bao gồm các sản phẩm chưa được phát hành hoặc bị ẩn. 
-![[anh-lab-1-sqli-4.png]]
+![anh-lab-1-sqli-4](anh-lab-1-sqli-4.png)
+
 Và thế là SOLVED.
 
